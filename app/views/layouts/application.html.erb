@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Editor</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<div id="background">
+
+
+<div class="main-holder">
+	<table>
+	<tr>
+	<td><%= image_tag("bg_logo.gif") %></td>
+	<td class="img_tr"><h1><%= image_tag("mailling.gif",:class=>"img_mailing") %> DVDPost Mailings</h1></td>
+	</tr>
+
+	</table>
+
+	<table class="action_mail">
+	<tr>
+	<td ><%= link_to 'New chronicle', new_chronicle_path,:class=>'mail_button', :tabindex => '997' %></td>
+	<td align="right" width="600">search by chronicle id : 
+
+		<input name="search" id="search" type="text" tabindex="998">
+
+	    <input name="ok" value="search" type="button"  tabindex="999" id ='search_btn' >
+	</td>
+	</tr>
+
+	</table>
+
+
+
+
+<p style="color: green"><%= flash[:notice] %></p>
+<%= yield %>
+</div>
+</div>
+</body>
+</html>

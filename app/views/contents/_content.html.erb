@@ -1,0 +1,11 @@
+<p class="mailing_subject gris">
+		Language : <%= language_name(content.language_id) %><br />
+		 subject <%= content.title %> subtitle : <%= content.subtitle %><%= link_to 'Edit', edit_chronicle_content_path(@chronicle, content, :page=>@page), :class => "edit" %>
+		 <%= link_to 'Destroy', chronicle_content_path(@chronicle, content, :page => @page), :confirm => 'Are you sure?', :method => :delete, :class => "destroy" %> 
+</p>
+<p>
+ <%= content.description.html_safe if content.description %>
+</p>
+<p>
+ <%= content.full_description.html_safe if content.full_description %>
+</p>
