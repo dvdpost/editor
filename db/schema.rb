@@ -998,7 +998,7 @@ ActiveRecord::Schema.define(:version => 20120302095955) do
     t.string   "name"
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
-    t.datetime "status", :default => "TEST"      :null => false
+    t.string   "status", :default => "TEST"      :null => false
     t.boolean  "deleted",     :default => false, :null => false
     t.integer  "category_id"
   end
