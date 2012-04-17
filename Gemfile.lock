@@ -116,7 +116,7 @@ PLATFORMS
 DEPENDENCIES
   ckeditor (= 3.7.0.rc3)
   coffee-rails (~> 3.2.1)
-  jquery-rails
+  jquery-rails (= 2.0.1)
   mysql2
   paperclip
   rails (= 3.2.3)
