@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120302095955) do
+ActiveRecord::Schema.define(:version => 20120417151053) do
 
   create_table "OrdersDetailsPurchase", :id => false, :force => true do |t|
     t.integer   "OrdersDetailsPurchase_id",                   :null => false
@@ -652,7 +652,7 @@ ActiveRecord::Schema.define(:version => 20120302095955) do
     t.datetime "modify_at"
   end
 
-  create_table "address_book", :id => false, :force => true do |t|
+  create_table "address_book", :force => true do |t|
     t.integer   "customers_id",                       :default => 0,  :null => false
     t.integer   "address_book_id",                    :default => 1,  :null => false
     t.string    "entry_gender",         :limit => 1,  :default => "", :null => false
@@ -676,6 +676,11 @@ ActiveRecord::Schema.define(:version => 20120302095955) do
   create_table "address_format", :primary_key => "address_format_id", :force => true do |t|
     t.string "address_format",  :limit => 128, :default => "", :null => false
     t.string "address_summary", :limit => 48,  :default => "", :null => false
+  end
+
+  create_table "addresses", :force => true do |t|
+    t.integer "customer_id"
+    t.string  "street"
   end
 
   create_table "automatic_emails", :force => true do |t|
@@ -996,11 +1001,11 @@ ActiveRecord::Schema.define(:version => 20120302095955) do
 
   create_table "chronicles", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
-    t.string   "status", :default => "TEST"      :null => false
-    t.boolean  "deleted",     :default => false, :null => false
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
+    t.boolean  "selected",                 :default => false,  :null => false
     t.integer  "category_id"
+    t.string   "status",      :limit => 0, :default => "TEST"
   end
 
   create_table "cinebel", :primary_key => "Code_film", :force => true do |t|
@@ -3621,6 +3626,12 @@ ActiveRecord::Schema.define(:version => 20120302095955) do
     t.string  "collect_platform",                          :default => "", :null => false
   end
 
+  create_table "potential_upgrades", :force => true do |t|
+    t.integer "count"
+    t.integer "days_before_reconduction"
+    t.date    "date"
+  end
+
   create_table "product_lists", :force => true do |t|
     t.string   "name"
     t.string   "description"
@@ -4755,6 +4766,7 @@ ActiveRecord::Schema.define(:version => 20120302095955) do
     t.integer "logo_image",                 :limit => 1,  :default => 0
     t.string  "style",                      :limit => 0,  :default => "normal",  :null => false
     t.string  "kind",                       :limit => 0,  :default => "normal"
+    t.string  "url"
   end
 
   create_table "themes_events_selections", :force => true do |t|
