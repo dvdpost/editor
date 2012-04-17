@@ -24,6 +24,8 @@ gem 'jquery-rails','2.0.2'
 gem "ckeditor", "3.7.0.rc3"
 gem "paperclip"
 gem "will_paginate", "~> 3.0.3"
+gem 'execjs'
+gem 'therubyracer'
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
