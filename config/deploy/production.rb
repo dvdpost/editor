@@ -47,24 +47,9 @@ namespace :deploy do
       encoding: latin1
       username: webuser
       password: 3gallfir-
-      database: translations
-      host: matadi
-      port: 3306
-    legacy:
-      adapter: mysql2
-      encoding: latin1
-      username: webuser
-      password: 3gallfir-
       database: dvdpost_be_prod
       host: matadi
-    legacy_common:
-      adapter: mysql2
-      database: dvdpost_common
-      host: matadi
-      username: webuser
-      password: 3gallfir-
-      timeout: 5000
-      encoding: latin1      
+      port: 3306
     EOF
     
     put db_config, "#{release_path}/config/database.yml"
