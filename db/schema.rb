@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120417154036) do
+ActiveRecord::Schema.define(:version => 20120423152034) do
 
   create_table "OrdersDetailsPurchase", :id => false, :force => true do |t|
     t.integer   "OrdersDetailsPurchase_id",                   :null => false
@@ -1006,6 +1006,7 @@ ActiveRecord::Schema.define(:version => 20120417154036) do
     t.boolean  "selected",                 :default => false,  :null => false
     t.integer  "category_id"
     t.string   "status",      :limit => 0, :default => "TEST"
+    t.integer  "rating",                   :default => 0
   end
 
   create_table "cinebel", :primary_key => "Code_film", :force => true do |t|
@@ -2579,6 +2580,13 @@ ActiveRecord::Schema.define(:version => 20120417154036) do
     t.integer  "rentals",                       :default => 0,  :null => false
   end
 
+  create_table "films", :force => true do |t|
+    t.string   "name"
+    t.string   "year"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "filters", :force => true do |t|
     t.integer  "customer_id"
     t.integer  "country_id"
@@ -3564,6 +3572,18 @@ ActiveRecord::Schema.define(:version => 20120417154036) do
   create_table "payment_type", :force => true do |t|
     t.string "name", :limit => 45, :null => false
   end
+
+  create_table "person_ratings", :force => true do |t|
+    t.integer  "person_id"
+    t.string   "person_type"
+    t.integer  "rateable_id"
+    t.string   "rateable_type"
+    t.decimal  "weight",        :precision => 5, :scale => 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "person_ratings", ["rateable_type"], :name => "index_person_ratings_on_rateable_type"
 
   create_table "phone_custserv", :force => true do |t|
     t.integer  "customer_id",                              :null => false

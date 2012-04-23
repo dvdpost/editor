@@ -11,6 +11,9 @@
      selected : <%= f.select :selected, %w[0 1] %>
   </p>
   <p>
+     rating : <%= f.select :rating, %w[0 1 2 3 4 5] %>
+  </p>
+  <p>
      category : <%= f.select :category_id, @categories.collect{|category| [category.name, category.id]} %>
   </p>
   <p id ="translation_p">
