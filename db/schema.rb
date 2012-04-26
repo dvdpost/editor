@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120423152034) do
+ActiveRecord::Schema.define(:version => 20120426134337) do
 
   create_table "OrdersDetailsPurchase", :id => false, :force => true do |t|
     t.integer   "OrdersDetailsPurchase_id",                   :null => false
@@ -1001,12 +1001,16 @@ ActiveRecord::Schema.define(:version => 20120423152034) do
 
   create_table "chronicles", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
-    t.boolean  "selected",                 :default => false,  :null => false
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
+    t.boolean  "selected",                        :default => false,  :null => false
     t.integer  "category_id"
-    t.string   "status",      :limit => 0, :default => "TEST"
-    t.integer  "rating",                   :default => 0
+    t.string   "status",             :limit => 0, :default => "TEST"
+    t.integer  "rating",                          :default => 0
+    t.string   "cover_file_name"
+    t.string   "cover_content_type"
+    t.integer  "cover_file_size"
+    t.datetime "cover_updated_at"
   end
 
   create_table "cinebel", :primary_key => "Code_film", :force => true do |t|
