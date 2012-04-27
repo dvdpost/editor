@@ -23,9 +23,10 @@ class ContentsController < ApplicationController
     coder = HTMLEntities.new
     respond_to do |format|
       Actor.where("actors_type = 'dvd_norm' and actors_name like '% %'").each do |a|
-        name = coder.encode(a.name, :named)
+        name = a.name
         if params[:chronicle_content][:full_description].scan(Regexp.new("#{name}",'i'))
           if params[:chronicle_content][:full_description].scan(Regexp.new("#{name}\ *<\/a>",'i')).empty?
+            name = coder.encode(a.name, :named)
             params[:chronicle_content][:full_description] = params[:chronicle_content][:full_description].gsub(Regexp.new("#{name}",'i'),'<a href="/'+params[:lang]+'/actors/'+a.cached_slug+'/products">'+name+'</a>')
           end
         end
@@ -45,9 +46,10 @@ class ContentsController < ApplicationController
 
   def create
     Actor.where("actors_type = 'dvd_norm' and actors_name like '% %'").each do |a|
-      name = coder.encode(a.name, :named)
+      name = a.name
       if params[:chronicle_content][:full_description].scan(Regexp.new("#{name}",'i'))
         if params[:chronicle_content][:full_description].scan(Regexp.new("#{name}\ *<\/a>",'i')).empty?
+          name = coder.encode(a.name, :named)
           params[:chronicle_content][:full_description] = params[:chronicle_content][:full_description].gsub(Regexp.new("#{name}",'i'),'<a href="/'+params[:lang]+'/actors/'+a.cached_slug+'/products">'+name+'</a>')
         end
       end
