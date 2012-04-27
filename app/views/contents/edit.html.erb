@@ -4,6 +4,7 @@
   <%= f.error_messages if 1 == 0%>
 
   <p>
+    <%= hidden_field_tag :lang, language_name(@content.language_id) %>
     <%= f.label :title %><br />
     <%= f.text_field :title, :size => 85 %>
   </p>
