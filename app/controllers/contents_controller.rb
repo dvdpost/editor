@@ -45,6 +45,7 @@ class ContentsController < ApplicationController
   end
 
   def create
+    coder = HTMLEntities.new
     Actor.where("actors_type = 'dvd_norm' and actors_name like '% %'").each do |a|
       name = a.name
       if params[:chronicle_content][:full_description].scan(Regexp.new("#{name}",'i'))
