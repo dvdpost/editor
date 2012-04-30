@@ -4,6 +4,7 @@
  	<td><%= chronicle.status %></td>
  	<td><%= chronicle.selected %></td>
  	<td><%= chronicle.rating %></td>
+ 	<td><%= chronicle.imdb_id %></td>
  	<td><%= chronicle.category.name if chronicle.category %></td>
 	<td align='center'><%= link_to 'Edit', edit_chronicle_path(chronicle,:page=>@page) %></td>
 	<td align='center'><%= link_to image_tag("trash.png", :border=> 0 ), chronicle_path(chronicle, :page => @page), :confirm => 'Are you sure?', :method => :delete %> </td>

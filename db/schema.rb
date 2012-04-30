@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120426134337) do
+ActiveRecord::Schema.define(:version => 20120430085951) do
 
   create_table "OrdersDetailsPurchase", :id => false, :force => true do |t|
     t.integer   "OrdersDetailsPurchase_id",                   :null => false
@@ -1011,6 +1011,7 @@ ActiveRecord::Schema.define(:version => 20120426134337) do
     t.string   "cover_content_type"
     t.integer  "cover_file_size"
     t.datetime "cover_updated_at"
+    t.integer  "imdb_id"
   end
 
   create_table "cinebel", :primary_key => "Code_film", :force => true do |t|
