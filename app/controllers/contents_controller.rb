@@ -27,6 +27,7 @@ class ContentsController < ApplicationController
         if params[:chronicle_content][:full_description].scan(Regexp.new("#{name}",'i'))
           if params[:chronicle_content][:full_description].scan(Regexp.new("#{name}\ *<\/a>",'i')).empty?
             name = coder.encode(a.name, :named)
+            Rails.logger.debug { "@@@#{params[:lang]} #{a.cached_slug} #{name}" }
             params[:chronicle_content][:full_description] = params[:chronicle_content][:full_description].gsub(Regexp.new("#{name}",'i'),'<a href="/'+params[:lang]+'/actors/'+a.cached_slug+'/products">'+name+'</a>')
           end
         end
