@@ -24,7 +24,7 @@ class ContentsController < ApplicationController
     respond_to do |format|
       Actor.where("actors_type = 'dvd_norm' and actors_name like '% %'").each do |a|
         name = a.name
-        if params[:chronicle_content][:full_description].scan(Regexp.new("#{name}",'i'))
+        if params[:chronicle_content][:full_description].scan(Regexp.new("#{name}",'i')).size > 0
           if params[:chronicle_content][:full_description].scan(Regexp.new("#{name}\ *<\/a>",'i')).empty?
             name = coder.encode(a.name, :named)
             Rails.logger.debug { "@@@#{params[:lang]} #{a.cached_slug} #{name}" }
