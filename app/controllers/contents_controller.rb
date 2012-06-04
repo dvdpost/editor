@@ -22,16 +22,7 @@ class ContentsController < ApplicationController
   def update
     coder = HTMLEntities.new
     respond_to do |format|
-      Actor.where("actors_type = 'dvd_norm' and actors_name like '% %'").each do |a|
-        name = a.name
-        if params[:chronicle_content][:full_description].scan(Regexp.new("#{name}",'i')).size > 0
-          if params[:chronicle_content][:full_description].scan(Regexp.new("#{name}\ *<\/a>",'i')).empty?
-            name = coder.encode(a.name, :named)
-            Rails.logger.debug { "@@@#{params[:lang]} #{a.cached_slug} #{name}" }
-            params[:chronicle_content][:full_description] = params[:chronicle_content][:full_description].gsub(Regexp.new("#{name}",'i'),'<a href="/'+params[:lang]+'/actors/'+a.cached_slug+'/products">'+name+'</a>')
-          end
-        end
-      end
+      change_article(params)
       if @content.update_attributes(params[:chronicle_content])
          flash[:notice] = 'content was successfully updated.'
          format.html { redirect_to chronicle_contents_path(@chronicle, :page => @page)}
@@ -46,17 +37,7 @@ class ContentsController < ApplicationController
   end
 
   def create
-    coder = HTMLEntities.new
-    Actor.where("actors_type = 'dvd_norm' and actors_name like '% %'").each do |a|
-      name = a.name
-      if params[:chronicle_content][:full_description].scan(Regexp.new("#{name}",'i')).size > 0
-        if params[:chronicle_content][:full_description].scan(Regexp.new("#{name}\ *<\/a>",'i')).empty?
-          name = coder.encode(a.name, :named)
-          Rails.logger.debug { "@@@#{params[:lang]} #{a.cached_slug} #{name}" }
-          params[:chronicle_content][:full_description] = params[:chronicle_content][:full_description].gsub(Regexp.new("#{name}",'i'),'<a href="/'+params[:lang]+'/actors/'+a.cached_slug+'/products">'+name+'</a>')
-        end
-      end
-    end
+    change_article(params)
     @translation = ChronicleContent.new(params[:chronicle_content])
     @translation.chronicle = @chronicle
     respond_to do |format|
@@ -72,8 +53,51 @@ class ContentsController < ApplicationController
   private
   def load_page
     @page=params[:page] || 1
-    
   end
+
+  def change_article(params)
+    case params[:lang]
+      when 'fr'
+        lang_id = 1
+      when 'nl'
+        lang_id = 2
+      when 'en'
+        lang_id = 3
+    end
+    coder = HTMLEntities.new
+    if ( params[:chronicle_content][:full_description] =~ /@@/ || params[:chronicle_content][:description] =~ /@@/)
+      ProductDescription.where("language_id = #{lang_id} and products_name != '' ").each do |p|
+        n = p.title.gsub(")",'\)').gsub("(",'\(')
+        if params[:chronicle_content][:full_description].scan(Regexp.new("@@#{n}",'i')).size > 0
+          url = p.product && p.product.imdb_id > 0 ? "/#{params[:lang]}/products?imdb_id=#{p.product.imdb_id}" : "/#{params[:lang]}/products/#{p.to_param}"
+          name = coder.encode(p.title, :named)
+          params[:chronicle_content][:full_description] = params[:chronicle_content][:full_description].gsub(Regexp.new("@@#{name}",'i'),'<a href="'+url+'">'+p.title+'</a>')
+        end
+        if params[:chronicle_content][:description].scan(Regexp.new("@@#{n}",'i')).size > 0
+          url = p.product && p.product.imdb_id > 0 ? "/#{params[:lang]}/products?imdb_id=#{p.product.imdb_id}" : "/#{params[:lang]}/products/#{p.to_param}"
+          name = coder.encode(p.title, :named)
+          params[:chronicle_content][:description] = params[:chronicle_content][:description].gsub(Regexp.new("@@#{name}",'i'),'<a href="'+url+'">'+p.title+'</a>')
+        end
+      end
+    end
+    if params[:lang] == 'nl'
+      params[:chronicle_content][:full_description] = params[:chronicle_content][:full_description].gsub('"/fr/','"/nl/')
+      params[:chronicle_content][:description] = params[:chronicle_content][:description].gsub('"/fr/','"/nl/')
+    elsif params[:lang] == 'en'
+      params[:chronicle_content][:full_description] = params[:chronicle_content][:full_description].gsub('"/fr/','"/en/')
+      params[:chronicle_content][:description] = params[:chronicle_content][:description].gsub('"/fr/','"/en/')
+    end
+    Actor.where("actors_type = 'dvd_norm' and actors_name like '% %'").each do |a|
+      name = a.name
+      if params[:chronicle_content][:full_description].scan(Regexp.new("#{name}",'i')).size > 0
+        if params[:chronicle_content][:full_description].scan(Regexp.new("#{name}\ *<\/a>",'i')).empty?
+          name = coder.encode(a.name, :named)
+          params[:chronicle_content][:full_description] = params[:chronicle_content][:full_description].gsub(Regexp.new("#{name}",'i'),'<a href="/'+params[:lang]+'/actors/'+a.cached_slug+'/products">'+name+'</a>')
+        end
+      end
+    end
+  end
+
   def get_chronicle_info
     begin
       @chronicle = Chronicle.find(params[:chronicle_id])
