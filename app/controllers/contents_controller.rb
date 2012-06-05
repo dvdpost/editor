@@ -68,15 +68,17 @@ class ContentsController < ApplicationController
     if ( params[:chronicle_content][:full_description] =~ /@@/ || params[:chronicle_content][:description] =~ /@@/)
       ProductDescription.where("language_id = #{lang_id} and products_name != '' ").each do |p|
         n = p.title.gsub(")",'\)').gsub("(",'\(')
-        if params[:chronicle_content][:full_description].scan(Regexp.new("@@#{n}",'i')).size > 0
+        name = coder.encode(n, :named)
+        name = name.sub("&apos;","&#39;")
+        
+        reg = Regexp.new("@@#{name}@@",'i')
+        if params[:chronicle_content][:full_description].scan(reg).size > 0
           url = p.product && p.product.imdb_id > 0 ? "/#{params[:lang]}/products?imdb_id=#{p.product.imdb_id}" : "/#{params[:lang]}/products/#{p.to_param}"
-          name = coder.encode(p.title, :named)
-          params[:chronicle_content][:full_description] = params[:chronicle_content][:full_description].gsub(Regexp.new("@@#{name}",'i'),'<a href="'+url+'">'+p.title+'</a>')
+          params[:chronicle_content][:full_description] = params[:chronicle_content][:full_description].gsub(Regexp.new("@@#{name}@@",'i'),'<a href="'+url+'">'+p.title+'</a>')
         end
-        if params[:chronicle_content][:description].scan(Regexp.new("@@#{n}",'i')).size > 0
+        if params[:chronicle_content][:description].scan(reg).size > 0
           url = p.product && p.product.imdb_id > 0 ? "/#{params[:lang]}/products?imdb_id=#{p.product.imdb_id}" : "/#{params[:lang]}/products/#{p.to_param}"
-          name = coder.encode(p.title, :named)
-          params[:chronicle_content][:description] = params[:chronicle_content][:description].gsub(Regexp.new("@@#{name}",'i'),'<a href="'+url+'">'+p.title+'</a>')
+          params[:chronicle_content][:description] = params[:chronicle_content][:description].gsub(Regexp.new("@@#{name}@@",'i'),'<a href="'+url+'">'+p.title+'</a>')
         end
       end
     end
@@ -95,6 +97,13 @@ class ContentsController < ApplicationController
           params[:chronicle_content][:full_description] = params[:chronicle_content][:full_description].gsub(Regexp.new("#{name}",'i'),'<a href="/'+params[:lang]+'/actors/'+a.cached_slug+'/products">'+name+'</a>')
         end
       end
+      if params[:chronicle_content][:description].scan(Regexp.new("#{name}",'i')).size > 0
+        if params[:chronicle_content][:description].scan(Regexp.new("#{name}\ *<\/a>",'i')).empty?
+          name = coder.encode(a.name, :named)
+          params[:chronicle_content][:description] = params[:chronicle_content][:description].gsub(Regexp.new("#{name}",'i'),'<a href="/'+params[:lang]+'/actors/'+a.cached_slug+'/products">'+name+'</a>')
+        end
+      end
+      
     end
   end
 
