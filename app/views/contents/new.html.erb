@@ -4,6 +4,14 @@
   <%= f.error_messages if 1== 0 %>
   <p class="mailing_subject">Language : <%= language_name(params[:language_id]) %></p>
   <p>
+     status : <%= f.select :status, %w[TEST ONLINE] %>
+  </p>
+  <p>
+     selected : <%= f.select :selected, %w[true false] %>
+  </p>
+  <%= f.file_field :cover %>
+  <%= image_tag @content.cover.url(:small) %>
+  <p>
     <%= hidden_field_tag :lang, language_name(params[:language_id]) %>
     <%= f.label :title %><br />
     <%= f.text_field :title, :size=>'85'%>

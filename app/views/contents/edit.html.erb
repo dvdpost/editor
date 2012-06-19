@@ -2,7 +2,14 @@
 <p class="chronicleing_subject">Language : <%= language_name(@content.language_id) %></p>
 <%= form_for([@chronicle,@content],:url=>chronicle_content_path(@chronicle,@content,:page=>@page)) do |f| %>
   <%= f.error_messages if 1 == 0%>
-
+  <p>
+     status : <%= f.select :status, %w[TEST ONLINE] %>
+  </p>
+  <p>
+     selected : <%= f.select :selected, %w[true false] %>
+  </p>
+  <%= f.file_field :cover %>
+  <%= image_tag @content.cover.url(:small) %>
   <p>
     <%= hidden_field_tag :lang, language_name(@content.language_id) %>
     <%= f.label :title %><br />

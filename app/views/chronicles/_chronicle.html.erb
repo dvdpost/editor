@@ -1,8 +1,6 @@
 <tr class='table_height <%= cycle('blanc', 'gris') %>'>
 	<td class="id_mail" ><%= chronicle.id %></td>
- 	<td><%= chronicle.name %> </td>
- 	<td><%= chronicle.status %></td>
- 	<td><%= chronicle.selected %></td>
+ 	<td><%= link_to chronicle.name, chronicle_contents_path(:chronicle_id => chronicle) %> </td>
  	<td><%= chronicle.rating %></td>
  	<td><%= chronicle.imdb_id %></td>
  	<td><%= chronicle.category.name if chronicle.category %></td>

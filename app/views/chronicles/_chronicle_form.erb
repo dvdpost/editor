@@ -5,12 +5,6 @@
     <%= f.text_field :name, :size => 85, :tabindex => 1 %>
   </p>
   <p>
-     status : <%= f.select :status, %w[TEST ONLINE] %>
-  </p>
-  <p>
-     selected : <%= f.select :selected, %w[true false] %>
-  </p>
-  <p>
      rating : <%= f.select :rating, %w[0 1 2 3 4 5] %>
   </p>
   <p>
@@ -18,12 +12,6 @@
   </p>
   <p>
      category : <%= f.select :category_id, @categories.collect{|category| [category.name, category.id]} %>
-  </p>
-  <p>
-  cover :
-  <%= f.file_field :cover %>
-  <br />
-  <%= image_tag @chronicle.cover.url(:small) %>
   </p>
   <p id ="translation_p">
     <%= f.submit 'Validate', :tabindex => 2 %> - <%= link_to 'Back', chronicles_path(:page=> @page ), :tabindex => 3 %>

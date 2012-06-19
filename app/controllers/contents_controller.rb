@@ -8,14 +8,15 @@ class ContentsController < ApplicationController
   before_filter :get_content_info, :only => [:edit, :destroy,:update]
 
   def index
-    @contents = @chronicle.contents
+    @contents = @chronicle.contents.where('status != "deleted"')
   end
 
   def edit
   end
 
   def destroy
-    @content.destroy
+    @content.status='DELETED'
+    @content.save
     redirect_to(chronicle_contents_path(@chronicle, :page => @page))
   end
   
