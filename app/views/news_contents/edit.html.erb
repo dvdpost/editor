@@ -1,0 +1,30 @@
+<h1>Editing content</h1>
+<p class="chronicleing_subject">Language : <%= language_name(@content.language_id) %></p>
+<%= form_for([@news,@content],:url=>news_content_path(@news,@content,:page=>@page)) do |f| %>
+  <%= f.error_messages if 1 == 0%>
+  <p>
+     status : <%= f.select :status, %w[TEST ONLINE] %>
+  </p>
+  <%= f.file_field :cover %>
+  <%= image_tag @content.cover.url(:small) %>
+  <p>
+    <%= hidden_field_tag :lang, language_name(@content.language_id) %>
+    <%= f.label :title %><br />
+    <%= f.text_field :title, :size => 85 %>
+  </p>
+  <p>
+    <%= f.label :subtitle %><br />
+    <%= f.text_field :subtitle, :size => 85 %>
+  </p>
+  <p>
+    <%= f.label :description %><br />
+    <%= f.cktext_area :description, :toolbar => 'Full', :width => 1000, :height => 400 %>
+  </p>
+  <p>
+    <%= f.label :full_description %><br />
+    <%= f.cktext_area :full_description, :toolbar => 'Full', :width => 1000, :height => 400 %>
+  </p>
+  <p id ="content_p">
+    <%= f.submit 'Update' %> - <%= link_to 'Back', news_contents_path(@news) %>
+  </p>
+<% end %>

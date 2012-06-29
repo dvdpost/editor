@@ -1,12 +1,10 @@
 <p class="mailing_subject gris">
 		Language : <%= language_name(content.language_id) %><br />
 		subject : <%= content.title %> <br />subtitle : <%= content.subtitle %><br />
-		selected : <%= content.selected %><br />
-    status : <%= content.status %><br />
-    
+		status : <%= content.status %><br />
 		<%= image_tag content.cover.url(:small) %> 
-		 <br /><%= link_to 'Edit', edit_chronicle_content_path(@chronicle, content, :page=>@page), :class => "edit" %>
-		 <%= link_to 'Destroy', chronicle_content_path(@chronicle, content, :page => @page), :confirm => 'Are you sure?', :method => :delete, :class => "destroy" %> 
+		 <br /><%= link_to 'Edit', edit_news_content_path(@news, content, :page=>@page), :class => "edit" %>
+		 <%= link_to 'Destroy', news_content_path(@news, content, :page => @page), :confirm => 'Are you sure?', :method => :delete, :class => "destroy" %> 
 </p>
 <p>
  <%= content.description.html_safe if content.description %>

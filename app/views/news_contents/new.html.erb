@@ -1,0 +1,34 @@
+<h1>New content</h1>
+
+<%= form_for(@content ,:url => news_contents_path(:news_id => @news.to_param, :page => @page)) do |f| %>
+  <%= f.error_messages if 1== 0 %>
+  <p class="mailing_subject">Language : <%= language_name(params[:language_id]) %></p>
+  <p>
+     status : <%= f.select :status, %w[TEST ONLINE] %>
+  </p>
+  <%= f.file_field :cover %>
+  <%= image_tag @content.cover.url(:small) %>
+  <p>
+    <%= hidden_field_tag :lang, language_name(params[:language_id]) %>
+    <%= f.label :title %><br />
+    <%= f.text_field :title, :size=>'85'%>
+  </p>
+  <p>
+    <%= f.label :subtitle %><br />
+    <%= f.text_field :subtitle, :size=>'85'%>
+  </p>
+  <p>
+    <%= f.label :description %><br />
+    <%= f.cktext_area :description, :toolbar => 'Full', :width => 1000, :height => 400 %>
+  </p>
+  <p>
+    <%= f.label :full_description %><br />
+    <%= f.cktext_area :full_description, :toolbar => 'Full', :width => 1000, :height => 400 %>
+  </p>
+  <p id="translation_p">
+	<%= f.hidden_field :language_id, :value => params[:language_id] %>
+	<%= f.submit 'Create' %> - <%= link_to 'Back', news_index_path %>
+  </p>
+
+<% end %>
+

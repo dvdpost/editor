@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120430085951) do
+ActiveRecord::Schema.define(:version => 20120629121822) do
 
   create_table "OrdersDetailsPurchase", :id => false, :force => true do |t|
     t.integer   "OrdersDetailsPurchase_id",                   :null => false
@@ -480,6 +480,14 @@ ActiveRecord::Schema.define(:version => 20120430085951) do
     t.string "multi_use", :limit => 0,  :default => "NO"
   end
 
+  create_table "activation_actions", :force => true do |t|
+    t.integer "activation_code_id"
+    t.integer "class_id"
+    t.integer "customer_id"
+  end
+
+  add_index "activation_actions", ["activation_code_id"], :name => "index_activation_actions_on_activation_code_id"
+
   create_table "activation_campaign", :force => true do |t|
     t.string   "campaign_name",                   :limit => 50
     t.integer  "activation_group",                                                :null => false
@@ -503,6 +511,11 @@ ActiveRecord::Schema.define(:version => 20120430085951) do
     t.string   "banner",                          :limit => 50
     t.integer  "droselia",                                                        :null => false
     t.string   "combined_action",                 :limit => 0,  :default => "NO"
+  end
+
+  create_table "activation_classes", :force => true do |t|
+    t.string "name"
+    t.string "description"
   end
 
   create_table "activation_code", :primary_key => "activation_id", :force => true do |t|
@@ -627,17 +640,20 @@ ActiveRecord::Schema.define(:version => 20120430085951) do
   end
 
   create_table "actors", :primary_key => "actors_id", :force => true do |t|
-    t.string  "actors_name",        :limit => 50, :default => "",           :null => false
+    t.string  "actors_name",        :limit => 50, :default => "",        :null => false
     t.string  "actors_image",       :limit => 50, :default => "actors/"
-    t.string  "actors_dateofbirth", :limit => 10, :default => "0000-00-00"
+    t.string  "actors_dateofbirth", :limit => 10
+    t.string  "birth_place"
+    t.date    "death_at"
+    t.string  "death_place"
     t.text    "actors_description"
     t.text    "actors_awards"
     t.integer "top_actors",                       :default => 0
-    t.string  "actors_type",        :limit => 10, :default => "",           :null => false
+    t.string  "actors_type",        :limit => 10, :default => "",        :null => false
     t.string  "cached_slug"
     t.boolean "image_active",                     :default => false
-    t.boolean "focus",                            :default => false,        :null => false
-    t.string  "sexuality",          :limit => 0,  :default => "hetero",     :null => false
+    t.boolean "focus",                            :default => false,     :null => false
+    t.string  "sexuality",          :limit => 0,  :default => "hetero",  :null => false
   end
 
   add_index "actors", ["actors_type"], :name => "actors_type"
@@ -993,24 +1009,27 @@ ActiveRecord::Schema.define(:version => 20120430085951) do
     t.text     "full_description"
     t.integer  "chronicle_id"
     t.integer  "language_id"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-  end
-
-  add_index "chronicle_contents", ["chronicle_id"], :name => "index_chronicle_contents_on_chronicle_id"
-
-  create_table "chronicles", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at",                                          :null => false
-    t.datetime "updated_at",                                          :null => false
-    t.boolean  "selected",                        :default => false,  :null => false
-    t.integer  "category_id"
-    t.string   "status",             :limit => 0, :default => "TEST"
-    t.integer  "rating",                          :default => 0
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.boolean  "selected"
+    t.string   "status",             :limit => 0
     t.string   "cover_file_name"
     t.string   "cover_content_type"
     t.integer  "cover_file_size"
     t.datetime "cover_updated_at"
+  end
+
+  add_index "chronicle_contents", ["chronicle_id"], :name => "index_chronicle_contents_on_chronicle_id"
+  add_index "chronicle_contents", ["selected"], :name => "index_chronicle_contents_on_selected"
+  add_index "chronicle_contents", ["status"], :name => "index_chronicle_contents_on_status"
+
+  create_table "chronicles", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
+    t.integer  "category_id"
+    t.string   "status",      :limit => 0
+    t.integer  "rating",                   :default => 0
     t.integer  "imdb_id"
   end
 
@@ -1944,7 +1963,11 @@ ActiveRecord::Schema.define(:version => 20120430085951) do
   create_table "directors", :primary_key => "directors_id", :force => true do |t|
     t.string  "directors_name",        :limit => 50, :default => "",           :null => false
     t.string  "directors_image",       :limit => 50, :default => "directors/"
-    t.string  "directors_dateofbirth", :limit => 30
+    t.boolean "image_active",                        :default => false
+    t.string  "directors_dateofbirth", :limit => 10
+    t.string  "birth_place"
+    t.date    "death_at"
+    t.string  "death_place"
     t.text    "directors_description"
     t.text    "directors_awards"
     t.integer "top_directors",                       :default => 0
@@ -2383,6 +2406,43 @@ ActiveRecord::Schema.define(:version => 20120430085951) do
     t.integer "dvdpost_department_id",               :default => 0,   :null => false
     t.integer "status",                              :default => 0,   :null => false
   end
+
+  create_table "email_vision_customers", :force => true do |t|
+    t.string   "phone",                :limit => 25
+    t.string   "email"
+    t.string   "firstname",            :limit => 64
+    t.string   "lastname",             :limit => 64
+    t.integer  "language_id"
+    t.string   "gender",               :limit => 1
+    t.string   "vod_habit",            :limit => 24
+    t.integer  "nb_vod_views"
+    t.date     "birthday"
+    t.string   "client_type",          :limit => 24
+    t.string   "rental_cat",           :limit => 24
+    t.datetime "last_login_at"
+    t.string   "street"
+    t.string   "postal_code",          :limit => 6
+    t.string   "country",              :limit => 64
+    t.integer  "suspended"
+    t.integer  "abo"
+    t.integer  "abo_type"
+    t.integer  "size_wl_dvd"
+    t.integer  "size_wl_dvd_assigned"
+    t.integer  "size_wl_vod"
+    t.integer  "cpt_reconduction"
+    t.integer  "cpt_reconduction_all"
+    t.integer  "auto_stop"
+    t.date     "next_reconduction_at"
+    t.date     "last_post_send_at"
+    t.date     "last_vod_view_at"
+    t.integer  "cpt_payment_recovery"
+    t.integer  "blacklisted"
+    t.integer  "sleep"
+    t.string   "payment_type",         :limit => 64
+    t.integer  "newsletters_adult"
+  end
+
+  add_index "email_vision_customers", ["client_type"], :name => "kind"
 
   create_table "emails", :primary_key => "emails_id", :force => true do |t|
     t.string   "account",        :limit => 25, :default => "", :null => false
@@ -3217,6 +3277,7 @@ ActiveRecord::Schema.define(:version => 20120430085951) do
   end
 
   add_index "message_tickets", ["is_read"], :name => "is_read"
+  add_index "message_tickets", ["mail_id"], :name => "mail_id"
   add_index "message_tickets", ["ticket_id"], :name => "ticket_id"
   add_index "message_tickets", ["user_id"], :name => "user_id"
 
@@ -3226,6 +3287,35 @@ ActiveRecord::Schema.define(:version => 20120430085951) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "news", :force => true do |t|
+    t.string   "name"
+    t.integer  "category_id"
+    t.string   "status",      :limit => 0, :default => "TEST"
+    t.integer  "rating"
+    t.integer  "imdb_id"
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
+  end
+
+  create_table "news_contents", :force => true do |t|
+    t.string   "title"
+    t.string   "subtitle"
+    t.text     "description"
+    t.text     "full_description"
+    t.integer  "news_id"
+    t.boolean  "selected",                        :default => false
+    t.string   "status",             :limit => 0, :default => "TEST"
+    t.string   "author"
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
+    t.string   "cover_file_name"
+    t.string   "cover_content_type"
+    t.integer  "cover_file_size"
+    t.datetime "cover_updated_at"
+  end
+
+  add_index "news_contents", ["news_id"], :name => "index_news_contents_on_news_id"
 
   create_table "newsletter_dynamic", :id => false, :force => true do |t|
     t.integer "newsletter_dynamic_id",                :default => 0,  :null => false
@@ -4116,6 +4206,14 @@ ActiveRecord::Schema.define(:version => 20120430085951) do
   add_index "products_uninterested", ["customers_id"], :name => "customers_id"
   add_index "products_uninterested", ["products_id"], :name => "products_id"
 
+  create_table "propose_vods", :force => true do |t|
+    t.integer "imdb_id", :limit => 8
+    t.integer "mail_id"
+    t.boolean "fr",                   :default => true
+    t.boolean "en",                   :default => true
+    t.boolean "nl",                   :default => true
+  end
+
   create_table "prospects", :id => false, :force => true do |t|
     t.integer "customers_id",                          :default => 0,     :null => false
     t.string  "customers_firstname",     :limit => 32, :default => "",    :null => false
@@ -4171,6 +4269,26 @@ ActiveRecord::Schema.define(:version => 20120430085951) do
   create_table "quotations_options", :primary_key => "options_id", :force => true do |t|
     t.string "options_name", :default => "", :null => false
   end
+
+  create_table "recommendations", :force => true do |t|
+    t.integer  "product_id"
+    t.integer  "rank"
+    t.integer  "recommendation_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "recommendations", ["product_id"], :name => "index_recommendations_on_product_id"
+
+  create_table "recommendations1", :force => true do |t|
+    t.integer  "imdb_id"
+    t.string   "product_type", :limit => 11
+    t.integer  "rank"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "recommendations1", ["imdb_id"], :name => "index_recommendations_on_imdb_id"
 
   create_table "red_list", :primary_key => "red_list_id", :force => true do |t|
     t.integer  "action",       :default => 0, :null => false
@@ -4604,11 +4722,18 @@ ActiveRecord::Schema.define(:version => 20120430085951) do
   end
 
   create_table "studio", :primary_key => "studio_id", :force => true do |t|
-    t.string  "studio_name",  :limit => 50, :default => "",         :null => false
-    t.string  "studio_type",  :limit => 10, :default => "DVD_NORM", :null => false
-    t.integer "cost_for_new", :limit => 2,  :default => 1
-    t.integer "cost",         :limit => 2,  :default => 1
-    t.boolean "vod",                        :default => false
+    t.string  "studio_name",            :limit => 50,                                :default => "",         :null => false
+    t.string  "studio_type",            :limit => 10,                                :default => "DVD_NORM", :null => false
+    t.integer "cost_for_new",           :limit => 2,                                 :default => 1
+    t.integer "cost",                   :limit => 2,                                 :default => 1
+    t.boolean "vod",                                                                 :default => false
+    t.decimal "fee_new_vod",                          :precision => 10, :scale => 2
+    t.decimal "fee_back_catalogue",                   :precision => 10, :scale => 2
+    t.decimal "minimum_new_vod",                      :precision => 10, :scale => 2
+    t.decimal "minimum_back_catalogue",               :precision => 10, :scale => 2
+    t.decimal "minimum_global",                       :precision => 10, :scale => 2
+    t.integer "billing_reporting",      :limit => 1,                                 :default => 0
+    t.string  "billing_report_type",    :limit => 0
   end
 
   add_index "studio", ["studio_id", "studio_type"], :name => "studio_type"

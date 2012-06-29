@@ -1,0 +1,11 @@
+<tr class='table_height <%= cycle('blanc', 'gris') %>'>
+	<td class="id_mail" ><%= news.id %></td>
+ 	<td><%= link_to news.name, news_contents_path(:news_id => news) %> </td>
+ 	<td><%= news.rating %></td>
+ 	<td><%= news.imdb_id %></td>
+ 	<td><%= news.category.name if news.category %></td>
+ 	<td><%= news.author %></td>
+	<td align='center'><%= link_to 'Edit', edit_news_path(news,:page=>@page) %></td>
+	<td align='center'><%= link_to image_tag("trash.png", :border=> 0 ), news_path(news, :page => @page), :confirm => 'Are you sure?', :method => :delete %> </td>
+	<td> <%= new_contents_link(news)%> </td>
+</tr>

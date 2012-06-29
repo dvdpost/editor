@@ -54,7 +54,11 @@ Editor::Application.routes.draw do
   resources :chronicles do
     resources :contents
   end
-  
+
+  resources :news do
+    resources :contents, :controller => 'news_contents'
+  end
+
   # See how all your routes lay out with "rake routes"
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.

@@ -4,7 +4,7 @@
   <title>Editor</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
-	<%= javascript_include_tag 'chronicle' %>
+	<%= javascript_include_tag 'news' %>
   <%= csrf_meta_tags %>
 </head>
 <body>
@@ -14,7 +14,7 @@
 <div class="main-holder">
 	<table>
 	<tr>
-	<td><%= link_to image_tag("bg_logo.gif"), root_path %></td>
+	<td><%= link_to image_tag("bg_logo.gif"), news_index_path %></td>
 	<td class="img_tr"><h1><%= image_tag("mailling.gif",:class=>"img_mailing") %> DVDPost editor</h1></td>
 	</tr>
 
@@ -22,8 +22,8 @@
 
 	<table class="action_mail">
 	<tr>
-	<td ><%= link_to 'New chronicle', new_chronicle_path,:class=>'mail_button', :tabindex => '997' %></td>
-	<td align="right" width="600">search by chronicle id : 
+	<td ><%= link_to 'New Newsletters', new_news_path,:class=>'mail_button', :tabindex => '997' %></td>
+	<td align="right" width="600">search by newsletters id : 
 
 		<input name="search" id="search" type="text" tabindex="998">
 
