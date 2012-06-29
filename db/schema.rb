@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120629135152) do
+ActiveRecord::Schema.define(:version => 20120629140050) do
 
   create_table "OrdersDetailsPurchase", :id => false, :force => true do |t|
     t.integer   "OrdersDetailsPurchase_id",                   :null => false
@@ -3295,8 +3295,9 @@ ActiveRecord::Schema.define(:version => 20120629135152) do
     t.integer  "rating"
     t.integer  "imdb_id"
     t.string   "author"
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
+    t.string   "kind",        :limit => 0, :default => "NORMAL"
   end
 
   create_table "news_categories", :force => true do |t|

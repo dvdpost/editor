@@ -16,6 +16,10 @@
   <p>
      author : <%= f.text_field :author %>
   </p>
+  <p>
+     kind : <%= f.select :kind, %w[NORMAL ADULT] %>
+  </p>
+  
   <p id ="translation_p">
     <%= f.submit 'Validate', :tabindex => 2 %> - <%= link_to 'Back', news_index_path(:page=> @page ), :tabindex => 3 %>
   </p>
