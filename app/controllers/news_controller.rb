@@ -61,7 +61,7 @@ class NewsController < ApplicationController
        end
      end 
      def load_categories
-       @categories = ChronicleCategory.all
+       @categories = NewsCategory.all
      end
      def load_news
        begin

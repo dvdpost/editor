@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120629121822) do
+ActiveRecord::Schema.define(:version => 20120629135152) do
 
   create_table "OrdersDetailsPurchase", :id => false, :force => true do |t|
     t.integer   "OrdersDetailsPurchase_id",                   :null => false
@@ -3294,8 +3294,15 @@ ActiveRecord::Schema.define(:version => 20120629121822) do
     t.string   "status",      :limit => 0, :default => "TEST"
     t.integer  "rating"
     t.integer  "imdb_id"
+    t.string   "author"
     t.datetime "created_at",                                   :null => false
     t.datetime "updated_at",                                   :null => false
+  end
+
+  create_table "news_categories", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "news_contents", :force => true do |t|
@@ -3304,9 +3311,8 @@ ActiveRecord::Schema.define(:version => 20120629121822) do
     t.text     "description"
     t.text     "full_description"
     t.integer  "news_id"
-    t.boolean  "selected",                        :default => false
+    t.integer  "language_id"
     t.string   "status",             :limit => 0, :default => "TEST"
-    t.string   "author"
     t.datetime "created_at",                                          :null => false
     t.datetime "updated_at",                                          :null => false
     t.string   "cover_file_name"
