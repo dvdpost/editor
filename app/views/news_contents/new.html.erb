@@ -6,8 +6,12 @@
   <p>
      status : <%= f.select :status, %w[TEST ONLINE] %>
   </p>
+  cover<br />
   <%= f.file_field :cover %>
   <%= image_tag @content.cover.url(:small) %>
+  thumbs<br />
+  <%= f.file_field :thumbs %>
+  <%= image_tag @content.thumbs.url(:small) %>
   <p>
     <%= hidden_field_tag :lang, language_name(params[:language_id]) %>
     <%= f.label :title %><br />

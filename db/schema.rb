@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120629140050) do
+ActiveRecord::Schema.define(:version => 20120702080353) do
 
   create_table "OrdersDetailsPurchase", :id => false, :force => true do |t|
     t.integer   "OrdersDetailsPurchase_id",                   :null => false
@@ -3313,13 +3313,17 @@ ActiveRecord::Schema.define(:version => 20120629140050) do
     t.text     "full_description"
     t.integer  "news_id"
     t.integer  "language_id"
-    t.string   "status",             :limit => 0, :default => "TEST"
-    t.datetime "created_at",                                          :null => false
-    t.datetime "updated_at",                                          :null => false
+    t.string   "status",              :limit => 0, :default => "TEST"
+    t.datetime "created_at",                                           :null => false
+    t.datetime "updated_at",                                           :null => false
     t.string   "cover_file_name"
     t.string   "cover_content_type"
     t.integer  "cover_file_size"
     t.datetime "cover_updated_at"
+    t.string   "thumbs_file_name"
+    t.string   "thumbs_content_type"
+    t.integer  "thumbs_file_size"
+    t.datetime "thumbs_updated_at"
   end
 
   add_index "news_contents", ["news_id"], :name => "index_news_contents_on_news_id"
