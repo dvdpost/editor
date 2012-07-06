@@ -6,5 +6,5 @@
  	<td><%= chronicle.category.name if chronicle.category %></td>
 	<td align='center'><%= link_to 'Edit', edit_chronicle_path(chronicle,:page=>@page) %></td>
 	<td align='center'><%= link_to image_tag("trash.png", :border=> 0 ), chronicle_path(chronicle, :page => @page), :confirm => 'Are you sure?', :method => :delete %> </td>
-	<td> <%= new_contents_link(chronicle)%> </td>
+	<td> <%= chronicle_contents_link(chronicle)%> </td>
 </tr>

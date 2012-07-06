@@ -1,5 +1,5 @@
 module ChronicleHelper
-  def new_contents_link(chronicle)
+  def chronicle_contents_link(chronicle)
     content = ""
     [1,2,3].each do |lang|
       existing_translation = chronicle.contents.where("language_id = ? and status != ?", lang, 'deleted').first
