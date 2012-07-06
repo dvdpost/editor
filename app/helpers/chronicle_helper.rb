@@ -3,13 +3,13 @@ module ChronicleHelper
     content = ""
     [1,2,3].each do |lang|
       existing_translation = chronicle.contents.where("language_id = ? and status != ?", lang, 'deleted').first
-      content += translation_language_link(existing_translation,chronicle,lang)
+      content += translation_language_link2(existing_translation,chronicle,lang)
       content += ' '
     end 
     content.html_safe
   end
 
-  def translation_language_link(existing_translation, chronicle, lang)
+  def translation_language_link2(existing_translation, chronicle, lang)
     name = language_name(lang)
     if existing_translation
       link_to(name, edit_chronicle_content_path(:chronicle_id => chronicle, :id => existing_translation.to_param, :page=>@page), :class=>"edit")
